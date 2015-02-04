@@ -106,11 +106,18 @@ opts = OptionParser.new do |o|
     options[:skip_header] = true
   end
 
-  o.on("-t erb","--template erb",String, "Use ERB template for output") do |s|
+  o.on("-t erb","--template erb", String, "Use ERB template for output") do |s|
     require 'bio-vcf/vcfrdf'
     require 'erb'
     options[:template] = s
     options[:skip_header] = true
+  end
+  
+  o.on("--inflate=STRING", "Read a gzip file") do |s|
+    require 'zlib'
+    options[:to_inflate] = s
+    options[:inflate] = true
+    puts options[:to_inflate]
   end
   
    
@@ -152,6 +159,12 @@ opts.parse!(ARGV)
 BIOVCF_VERSION=version
 BIOVCF_BANNER = "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
 $stderr.print BIOVCF_BANNER
+
+if options[:inflate]
+  Zlib::GzipReader.open(options[:to_inflate]) { |gz|
+    STDIN = gz.read
+  }
+end
 
 if options[:show_help] 
   print opts 
