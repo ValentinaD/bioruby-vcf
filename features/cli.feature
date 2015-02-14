@@ -2,6 +2,11 @@
 Feature: Command-line interface (CLI)
 
   bio-vcf has a powerful command line interface. Here we regression test features.
+    
+    Scenario: Test inflate and info filter
+    Given I have input file(s) named ""
+    When I execute "./bin/bio-vcf --inflate='test/data/input/multisample.gz' -i --filter 'r.info.dp>100'"
+    Then I expect the named output to match the named output "r.info.dp.gz"
 
   Scenario: Test the info filter using dp
     Given I have input file(s) named "test/data/input/multisample.vcf"
@@ -17,6 +22,11 @@ Feature: Command-line interface (CLI)
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf -i --num-threads 4 --thread-lines 4 --filter 'r.info.dp>2'"
     Then I expect the named output to match the named output "thread4_4"
+    
+  Scenario: Test inflate and sample filter
+    Given I have input file(s) named ""
+    When I execute "./bin/bio-vcf --inflate='test/data/input/multisample.gz' -i --sfilter 's.dp>20'"
+    Then I expect the named output to match the named output "s.dp.gz"
 
   Scenario: Test the sample filter using dp
     Given I have input file(s) named "test/data/input/multisample.vcf"
@@ -27,6 +37,11 @@ Feature: Command-line interface (CLI)
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf -i --ifilter 's.dp>100' --seval s.dp"
     Then I expect the named output to match the named output "ifilter_s.dp"
+    
+  Scenario: Test inflate and info eval
+    Given I have input file(s) named ""
+    When I execute "./bin/bio-vcf --inflate='test/data/input/multisample.gz' -i --eval 'r.info.dp'"
+    Then I expect the named output to match the named output "eval_r.info.dp.gz"
 
   Scenario: Test the info eval using dp
     Given I have input file(s) named "test/data/input/multisample.vcf"

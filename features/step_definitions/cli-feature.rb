@@ -4,7 +4,11 @@ Given /^I have input file\(s\) named "(.*?)"$/ do |arg1|
 end
 
 When /^I execute "(.*?)"$/ do |arg1|
-  @cmd = arg1 + ' < ' + @filenames[0]
+  if @filenames[0] != nil
+    @cmd = arg1 + ' < ' + @filenames[0]
+  else
+    @cmd = arg1
+  end
 end
 
 Then(/^I expect the named output to match the named output "(.*?)"$/) do |arg1|

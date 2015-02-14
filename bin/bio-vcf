@@ -117,7 +117,6 @@ opts = OptionParser.new do |o|
     require 'zlib'
     options[:to_inflate] = s
     options[:inflate] = true
-    puts options[:to_inflate]
   end
   
    
@@ -162,7 +161,7 @@ $stderr.print BIOVCF_BANNER
 
 if options[:inflate]
   Zlib::GzipReader.open(options[:to_inflate]) { |gz|
-    STDIN = gz.read
+   STDIN = gz.read
   }
 end
 
@@ -217,7 +216,7 @@ include BioVcf
 def parse_header line, samples, options
   header = VcfHeader.new
   header.add(line)
-  print line if not options[:skip_header]
+  print line if not options[:skip_header] and not options[:inflate]
   STDIN.each_line do | headerline |
     if headerline !~ /^#/
       line = headerline
