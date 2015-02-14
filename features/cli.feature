@@ -2,8 +2,13 @@
 Feature: Command-line interface (CLI)
 
   bio-vcf has a powerful command line interface. Here we regression test features.
+  
+  Scenario: Test inflate on empty file
+    Given I have input file(s) named ""
+    When I execute "./bin/bio-vcf --inflate='test/data/input/empty.gz'"
+    Then I expect the named output to match the named output "empty"
     
-    Scenario: Test inflate and info filter
+  Scenario: Test inflate and info filter
     Given I have input file(s) named ""
     When I execute "./bin/bio-vcf --inflate='test/data/input/multisample.gz' -i --filter 'r.info.dp>100'"
     Then I expect the named output to match the named output "r.info.dp.gz"

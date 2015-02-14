@@ -348,7 +348,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       end
     elsif options[:rewrite]
       # Default behaviour prints VCF line, but rewrite info
-      eval(options[:rewrite]) 
+      eval(options[:rewrite])
       (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t")+"\n"
     elsif stats
       # do nothing
@@ -442,7 +442,11 @@ begin
   end
   $stderr.print '.' if not options[:quiet]
   if NUM_THREADS == 1
-    process.call(lines).each { |l| print l}
+    i = 0
+    process.call(lines).each do |l|
+      print l if i != 0 or not options[:inflate]
+      i = i + 1
+    end
   else
     chunks << lines
     output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
